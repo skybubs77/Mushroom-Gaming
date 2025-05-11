@@ -46,29 +46,30 @@
   <div class="game-link" onclick="openGame('Minecraft/index.html')">Play Minecraft</div>
 
   <script>
-    function openGame(path) {
-      fetch(path)
-        .then(res => res.text())
-        .then(html => {
-          const newWin = window.open('about:blank');
-          if (!newWin) {
-            alert("Popup blocked. Please allow popups for this site.");
-            return;
-          }
+  function openGame(path) {
+    const fullPath = `${location.origin}/${path}`;
+    fetch(fullPath)
+      .then(res => res.text())
+      .then(html => {
+        const newWin = window.open('about:blank');
+        if (!newWin) {
+          alert("Popup blocked. Please allow popups for this site.");
+          return;
+        }
 
-          // Insert base tag to help resolve relative paths
-          const basePath = path.replace(/\/[^\/]*$/, '/');
-          html = html.replace('<head>', `<head><base href="${basePath}" />`);
+        // Insert base tag to help resolve relative paths
+        const basePath = path.replace(/\/[^\/]*$/, '/');
+        html = html.replace('<head>', `<head><base href="${basePath}" />`);
 
-          newWin.document.write(html);
-          newWin.document.close();
-        })
-        .catch(err => {
-          alert("Failed to load the game.");
-          console.error(err);
-        });
-    }
-  </script>
+        newWin.document.write(html);
+        newWin.document.close();
+      })
+      .catch(err => {
+        alert("Failed to load the game.");
+        console.error(err);
+      });
+  }
+</script>
 
 </body>
 </html>
